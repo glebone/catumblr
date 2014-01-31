@@ -162,11 +162,17 @@ class tumblrListView:
 		# Add a "close" button to the bottom of the dialog
 		image = gtk.Image()
 		image.set_from_file("resources/delete.png")
+		rimage = gtk.Image()
+		rimage.set_from_file("resources/trackback.png")
+		rimage.show()
+        
+        
 		button = gtk.Button()
 		image.show()
 		button.add(image)
 		button.connect_object("clicked", self.destroy, self.window)
-		rbutton = gtk.Button("Refresh")
+		rbutton = gtk.Button()
+		rbutton.add(rimage)
 		rbutton.show();
 		
 		
@@ -175,8 +181,8 @@ class tumblrListView:
 		# this makes it so the button is the default.
 		button.set_flags(gtk.CAN_DEFAULT)
 		
-		self.window.action_area.pack_start( button, True, True, 0)
-		self.window.action_area.pack_end( rbutton, True, True, 0)
+		self.window.action_area.pack_start( rbutton, True, True, 0)
+		self.window.action_area.pack_end( button, True, True, 0)
 
 		# This grabs this button to be the default button. Simply hitting
 		# the "Enter" key will cause this button to activate.

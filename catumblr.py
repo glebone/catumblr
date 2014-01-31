@@ -97,7 +97,7 @@ def show_window():
   window.set_border_width(10)
 
   box1 = gtk.VBox(False, 0)
-  label = gtk.Label("^..^ CAT(c) Flipflop blog client ")
+  label = gtk.Label("^..^ CATumblr ")
   label.set_alignment(0, 0)
   box1.pack_start(label, False, False, 0)
   label.show()
@@ -129,14 +129,23 @@ def show_window():
 
 
   imbox = gtk.HBox(False, 0)
-  button = gtk.Button("Add Image")
+  photo_icon = gtk.Image()
+  photo_icon.set_from_file("resources/camera.png")
+  photo_icon.show()
+  button = gtk.Button()
+  button.add(photo_icon)
   imlabel = gtk.Label("No image")
   button.connect("clicked", lambda w: getImage.add_image(imlabel))
   imbox.pack_start(button, True, False, 0)
   imbox.pack_end(imlabel, True, False, 0)
   
+
+  post_icon = gtk.Image()
+  post_icon.set_from_file("resources/check_mark.png")
+  post_icon.show()
   postbox = gtk.HBox(False, 0)
-  post_button = gtk.Button("Post")
+  post_button = gtk.Button()
+  post_button.add(post_icon)
   post_button.connect("clicked", lambda w: do_post(imlabel))
   postbox.pack_start(post_button, True, False, 0)
   
