@@ -10,6 +10,7 @@ import json
 from HTMLParser import HTMLParser
 import tumblrListView
 import getImage
+import weatherProvider
 
 #  ^..^ CAT(c) 2014 CATumblr - Tumblr client on PyGTK
 # --------------------------------------------------------
@@ -25,13 +26,27 @@ tag_entry = gtk.Entry()
 textview = gtk.TextView() 
 image_path = ""
 
+isWeather = gtk.CheckButton("Include weather info")
+
+
+def get_weather_box():
+  wbox = gtk.HBox(False, 0)
+  wbox.pack_start(isWeather, True, False, 0)
+  isWeather.show()
+  wbox.show()
+  return wbox
+
+
 
 def do_post(path):
   print "Posting..."
   t = Tumblpy("sYKNnjJRqbxWWlg19sY8WYnZyQi6wURbilnE4k3vsyqX4vc4ER","n8mtWzKieR8qgTdwUWNhF3OYZVIsvMZXvVr9DKPlCGI6wE2VLV",
       "PyvcruFPx1YqhdAOkCWjCPWMBIYx3fUJaiFzjhxpkwUwps0VjC","Zjwmi2wYA83rtIdoL82BcWcj5sxm5QrI1MEnZX4DzFQHWydx1C")
   tbuff = textview.get_buffer()
-  article_text = tbuff.get_text(tbuff.get_start_iter(), tbuff.get_end_iter())
+  article_text = ""
+  if isWeather.get_active():
+    article_text = weatherProvider.get_weather()
+  article_text = article_text + tbuff.get_text(tbuff.get_start_iter(), tbuff.get_end_iter())
   blog_url = t.post('user/info')
   blog_url = blog_url['user']['blogs'][1]['url']
   tags = "catumblr , "+ platform.node()
@@ -149,8 +164,9 @@ def show_window():
   post_button.connect("clicked", lambda w: do_post(imlabel))
   postbox.pack_start(post_button, True, False, 0)
   
-  
+  box1.pack_start(get_weather_box(), False, False, 0)
   box1.pack_start(imbox, False, False, 0)
+
   box1.pack_end(postbox, False, False, 0)
   
   window.add(box1)
