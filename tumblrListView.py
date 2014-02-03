@@ -120,18 +120,58 @@ class tumblrListView:
 	    return  table
 		
 
-	    
-    
-        		
+	def getMenu(self):
+		file_menu = gtk.Menu()    # Don't need to show menus
+
+  		# Create the menu items
+  		open_item = gtk.MenuItem("Open")
+  		save_item = gtk.MenuItem("Save")
+  		quit_item = gtk.MenuItem("Quit")
+
+  		# Add them to the menu
+  		file_menu.append(open_item)
+  		file_menu.append(save_item)
+  		file_menu.append(quit_item)
+
+  		# Attach the callback functions to the activate signal
+  		#open_item.connect_object("activate", menuitem_response, "file.open")
+  		#save_item.connect_object("activate", menuitem_response, "file.save")
+
+  		# We can attach the Quit menu item to our exit function
+  		#quit_item.connect_object ("activate", destroy, "file.quit")
+
+  		# We do need to show menu items
+  		open_item.show()
+  		save_item.show()
+  		quit_item.show()
+  		return file_menu
+    			
 	def __init__(self):
 		# Create a new dialog window for the scrolled window to be
 		# packed into. 
+
 				
 		self.window = gtk.Dialog()
 		self.window.connect("destroy", self.destroy)
 		self.window.set_title("^..^ CATumblr 0.0.1")
 		self.window.set_border_width(0)
 		self.window.set_size_request(300, 500)
+		self.window.set_icon_from_file("resources/ticon.png")
+
+		mb = gtk.MenuBar()
+		filemenu = gtk.Menu()
+		filem = gtk.MenuItem("File")
+		filem.set_submenu(filemenu)
+       
+		exit = gtk.MenuItem("Exit")
+ 		exit.connect("activate", gtk.main_quit)
+		filemenu.append(exit)
+
+		mb.append(filem)
+
+		mvbox = gtk.VBox(False, 2)
+		mvbox.pack_start(mb, False, False, 0)  
+
 
 		# create a new scrolled window.
 		self.scrolled_window = gtk.ScrolledWindow()
@@ -140,6 +180,8 @@ class tumblrListView:
 		self.scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
 
 		# The dialog window is created with a vbox packed into it.
+		self.window.add(mvbox)
+
 		self.window.vbox.pack_start(self.scrolled_window, True, True, 0)
 		self.scrolled_window.show()
 

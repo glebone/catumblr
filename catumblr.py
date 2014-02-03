@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-
-
 import gtk
 import ntpath
 from tumblpy import Tumblpy
@@ -110,6 +108,8 @@ def show_window():
   window.set_title("Tumblr client")
   #window.connect("delete_event", self.delete_event)
   window.set_border_width(10)
+  window.set_icon_from_file("resources/ticon.png")
+        
 
   box1 = gtk.VBox(False, 0)
   label = gtk.Label("^..^ CATumblr ")
