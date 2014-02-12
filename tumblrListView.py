@@ -10,6 +10,8 @@ import platform
 import json
 from HTMLParser import HTMLParser
 
+import catImageBox
+
 
 #  ^..^ CAT(c) 2014 CATumblr - Tumblr client on PyGTK
 # --------------------------------------------------------
@@ -46,7 +48,7 @@ class tumblrListView:
 	    "PyvcruFPx1YqhdAOkCWjCPWMBIYx3fUJaiFzjhxpkwUwps0VjC","Zjwmi2wYA83rtIdoL82BcWcj5sxm5QrI1MEnZX4DzFQHWydx1C")
 	    
 	    blog_url = t.post('user/info')
-	    blog_url = blog_url['user']['blogs'][0]['url']
+	    blog_url = blog_url['user']['blogs'][1]['url']
 	    
 	    posts = t.get('posts', blog_url=blog_url)
 	    posts_count = posts["total_posts"]
@@ -61,10 +63,16 @@ class tumblrListView:
 	    i = 0
 	    for cur_post in posts["posts"]:
 			buffer = ""
+			cur_image_fac = catImageBox.catImageBox("http://www.linux.org.ru/tango/img/opensource-logo.png", 50, 50)
+
 			if cur_post["type"] == "text":
 				buffer = cur_post["body"]
+			
 			if cur_post["type"] == "photo":
-				print cur_post["caption"]
+				i = len(cur_post["photos"][0]["alt_sizes"]) -1 
+				img_url = cur_post["photos"][0]["alt_sizes"][i]["url"]
+				
+				cur_image_fac = catImageBox.catImageBox(img_url, 75, 75)
 				buffer = cur_post["caption"]
 				
 			s = MLStripper()
@@ -80,11 +88,15 @@ class tumblrListView:
 			date_icon = gtk.Image()
 			date_icon.set_from_file("resources/cal.png")
 			date_icon.show()
+			cur_image = cur_image_fac.image
+			cur_image.show()
 			fdate = cur_post["date"]
 			date_label = gtk.Label(fdate.split(" ")[0])
 			date_label.set_line_wrap(True)
 			date_label.show()
-			date_box.pack_start(date_icon, True, True, 1)
+			#date_box.pack_start(date_icon, True, True, 1)
+			date_box.pack_start(cur_image, True, True, 1)
+			
 			date_box.pack_end(date_label, True, True, 1)
 			date_box.show()
 			
