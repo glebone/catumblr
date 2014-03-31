@@ -69,8 +69,8 @@ class tumblrListView:
 				buffer = cur_post["body"]
 			
 			if cur_post["type"] == "photo":
-				i = len(cur_post["photos"][0]["alt_sizes"]) -1 
-				img_url = cur_post["photos"][0]["alt_sizes"][i]["url"]
+				j = len(cur_post["photos"][0]["alt_sizes"]) -1 
+				img_url = cur_post["photos"][0]["alt_sizes"][j]["url"]
 				
 				cur_image_fac = catImageBox.catImageBox(img_url, 75, 75)
 				buffer = cur_post["caption"]

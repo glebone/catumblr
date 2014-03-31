@@ -7,6 +7,7 @@ import platform
 import json
 from HTMLParser import HTMLParser
 from time import gmtime, strftime
+import exifread
 
 # custom modules
 import tumblrListView
@@ -50,11 +51,17 @@ def do_post(path):
   article_text = article_text + tbuff.get_text(tbuff.get_start_iter(), tbuff.get_end_iter())
   blog_url = t.post('user/info')
   blog_url = blog_url['user']['blogs'][1]['url']
-  tags = "catumblr , "+ platform.node()
   if path.get_text() !="No image":
     photo = open(path.get_text(), 'rb')
+    ephoto = open(path.get_text(), 'rb')
+    tags = "catumblr , "+ platform.node()
+    etags = exifread.process_file(ephoto)
+    if etags.has_key('Image Model'):
+      tags = "catumblr , "+ platform.node() + ", " + str(etags['Image Model'])
     p_params = {'type':'photo', 'caption': article_text, 'data': photo, 'tags':tags}
+    ephoto.close()
   else:
+    tags = "catumblr , "+ platform.node()
     time_caption = strftime("%Y-%m-%d %H:%M:%S", gmtime())
     p_params = {'type':'text', 'body': article_text, 'caption': time_caption, 'tags':tags}
 
