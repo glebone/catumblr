@@ -5,6 +5,7 @@ from tumblpy import Tumblpy
 import os
 import platform
 import json
+import time
 from HTMLParser import HTMLParser
 from time import gmtime, strftime
 import exifread
@@ -16,16 +17,16 @@ import weatherProvider
 
 #  ^..^ CAT(c) 2014 CATumblr - Tumblr client on PyGTK
 # --------------------------------------------------------
-# 29 Jan 2014 glebone@yandex.ru 
+# 29 Jan 2014 glebone@yandex.ru
 
 
 
 
 ntpath.basename("a/b/c")
- 
+
 entry_name = gtk.Entry()
 tag_entry = gtk.Entry()
-textview = gtk.TextView() 
+textview = gtk.TextView()
 image_path = ""
 
 isWeather = gtk.CheckButton("Include weather info")
@@ -38,6 +39,10 @@ def get_weather_box():
   wbox.show()
   return wbox
 
+def get_date_desc():
+  date =  time.asctime(time.localtime(time.time()))
+  return date
+
 
 
 def do_post(path):
@@ -47,7 +52,7 @@ def do_post(path):
   tbuff = textview.get_buffer()
   article_text = ""
   if isWeather.get_active():
-    article_text = weatherProvider.get_weather()
+    article_text = get_date_desc() + weatherProvider.get_weather()
   article_text = article_text + tbuff.get_text(tbuff.get_start_iter(), tbuff.get_end_iter())
   blog_url = t.post('user/info')
   blog_url = blog_url['user']['blogs'][1]['url']
@@ -71,7 +76,7 @@ def do_post(path):
 def make_box_labels():
 
   box = gtk.HBox(True, 1)
- 
+
   # Create a series of buttons with the appropriate settings
 
   label = gtk.Label("Name of post")
@@ -82,7 +87,7 @@ def make_box_labels():
   label.set_alignment(0, 0)
   box.pack_start(label, False, False, 0)
   label.show()
-  
+
   return box
 
 def make_entry_box():
@@ -117,7 +122,7 @@ def make_text_area_box():
   textview.show()
   sw.show()
 
-  return box    
+  return box
 
 def show_window():
   window = gtk.Window(gtk.WINDOW_TOPLEVEL)
@@ -125,7 +130,7 @@ def show_window():
   #window.connect("delete_event", self.delete_event)
   window.set_border_width(10)
   window.set_icon_from_file("resources/ticon.png")
-        
+
 
   box1 = gtk.VBox(False, 0)
   label = gtk.Label("^..^ CATumblr ")
@@ -140,20 +145,20 @@ def show_window():
   box2 = make_box_labels()
   box1.pack_start(box2, False, False, 0)
   box2.show()
- 
-     
+
+
   box3 = make_entry_box()
   box1.pack_start(box3, False, False, 0)
   box3.show()
- 
+
   separator = gtk.HSeparator()
   box1.pack_start(separator, False, True, 5)
   separator.show()
- 
+
   box4 = make_text_area_box()
   box1.pack_start(box4, False, False, 0)
   box4.show()
- 
+
   separator = gtk.HSeparator()
   box1.pack_start(separator, False, True, 5)
   separator.show()
@@ -169,7 +174,7 @@ def show_window():
   button.connect("clicked", lambda w: getImage.add_image(imlabel))
   imbox.pack_start(button, True, False, 0)
   imbox.pack_end(imlabel, True, False, 0)
-  
+
 
   post_icon = gtk.Image()
   post_icon.set_from_file("resources/check_mark.png")
@@ -179,14 +184,14 @@ def show_window():
   post_button.add(post_icon)
   post_button.connect("clicked", lambda w: do_post(imlabel))
   postbox.pack_start(post_button, True, False, 0)
-  
+
   box1.pack_start(get_weather_box(), False, False, 0)
   box1.pack_start(imbox, False, False, 0)
 
   box1.pack_end(postbox, False, False, 0)
-  
+
   window.add(box1)
-  
+
 
   button.show()
   post_button.show()
@@ -196,21 +201,21 @@ def show_window():
   box1.show()
   window.show()
 
- 
- 
+
+
 def open_app(data=None):
   show_window()
- 
+
 def close_app(data=None):
   message(data)
   gtk.main_quit()
- 
+
 def make_menu(event_button, event_time, data=None):
   menu = gtk.Menu()
   open_item = gtk.MenuItem("Open App")
   close_item = gtk.MenuItem("Close App")
-  
-  #Append the menu items  
+
+  #Append the menu items
   menu.append(open_item)
   menu.append(close_item)
   #add callbacks
@@ -219,10 +224,10 @@ def make_menu(event_button, event_time, data=None):
   #Show the menu items
   open_item.show()
   close_item.show()
-  
+
   #Popup the menu
   menu.popup(None, None, None, event_button, event_time)
- 
+
 def on_right_click(data, event_button, event_time):
   #make_menu(event_button, event_time)
   tumblrListView.tumblrListView()
@@ -230,8 +235,8 @@ def on_right_click(data, event_button, event_time):
 def on_left_click(event):
   print "Showww!"
   show_window()
-  
- 
+
+
 if __name__ == '__main__':
   file = open("resources/ticon.png", "rb")
   binary = file.read()
