@@ -47,8 +47,8 @@ def get_date_desc():
 
 def do_post(path):
   print "Posting..."
-  t = Tumblpy("sYKNnjJRqbxWWlg19sY8WYnZyQi6wURbilnE4k3vsyqX4vc4ER","n8mtWzKieR8qgTdwUWNhF3OYZVIsvMZXvVr9DKPlCGI6wE2VLV",
-      "PyvcruFPx1YqhdAOkCWjCPWMBIYx3fUJaiFzjhxpkwUwps0VjC","Zjwmi2wYA83rtIdoL82BcWcj5sxm5QrI1MEnZX4DzFQHWydx1C")
+  t = Tumblpy("","",
+      "","")
   tbuff = textview.get_buffer()
   article_text = ""
   if isWeather.get_active():
